@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="pink">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anushika's Manager ✨🌸</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* 🎨 LIGHT THEME PALETTES */
+    :root[data-theme="pink"] {
+      --bg: #fff0f6;
+      --card: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(244, 114, 182, 0.35);
+      --accent: #db2777;
+      --accent-hover: #be185d;
+      --accent-light: rgba(219, 39, 119, 0.1);
+      --text: #4c0519;
+      --muted: #a21caf;
+      --orb1: #fbcfe8; --orb2: #e9d5ff; --orb3: #bae6fd;
+    }
+
+    :root[data-theme="matcha"] {
+      --bg: #f0fdf4;
+      --card: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(74, 222, 128, 0.4);
+      --accent: #16a34a;
+      --accent-hover: #15803d;
+      --accent-light: rgba(22, 163, 74, 0.1);
+      --text: #052e16;
+      --muted: #15803d;
+      --orb1: #bbf7d0; --orb2: #d9f99d; --orb3: #99f6e4;
+    }
+
+    :root[data-theme="lavender"] {
+      --bg: #faf5ff;
+      --card: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(168, 85, 247, 0.35);
+      --accent: #9333ea;
+      --accent-hover: #7e22ce;
+      --accent-light: rgba(147, 51, 234, 0.1);
+      --text: #2e1065;
+      --muted: #7e22ce;
+      --orb1: #e9d5ff; --orb2: #ddd6fe; --orb3: #fbcfe8;
+    }
+
+    :root[data-theme="cyber"] {
+      --bg: #f0f9ff;
+      --card: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(56, 189, 248, 0.4);
+      --accent: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-light: rgba(2, 132, 199, 0.1);
+      --text: #0c4a6e;
+      --muted: #0369a1;
+      --orb1: #bae6fd; --orb2: #c7d2fe; --orb3: #fecdd3;
+    }
+
+    :root {
+      --warning: #d97706;
+      --danger: #dc2626;
+      --success: #059669;
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --border: var(--card-border);
+      --shadow: 0 10px 25px -5px rgba(219, 39, 119, 0.1);
+      --title-font: 'Fredoka', cursive, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px 12px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 12s infinite alternate ease-in-out;
+    }
+    .orb-1 { width: 340px; height: 340px; background: var(--orb1); top: -60px; left: -60px; }
+    .orb-2 { width: 380px; height: 380px; background: var(--orb2); bottom: -80px; right: -80px; animation-delay: -5s; }
+    .orb-3 { width: 260px; height: 260px; background: var(--orb3); top: 40%; left: 60%; animation-delay: -2s; }
+
+    @keyframes float {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(30px) scale(1.08); }
+    }
+
+    .container { max-width: 1040px; margin: 0 auto; position: relative; z-index: 1; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: var(--card);
+      padding: 20px 24px;
+      border-radius: 24px;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .app-title {
+      font-family: var(--title-font);
+      font-size: 2.1rem;
+      margin: 0;
+      background: linear-gradient(135deg, var(--accent), var(--muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: 1px solid var(--card-border);
+      margin-top: 6px;
+    }
+
+    .theme-select, .btn-sound-toggle {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      width: auto;
+    }
+
+    .quote-card {
+      background: var(--accent-light);
+      border: 1px dashed var(--accent);
+      padding: 14px 20px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: var(--accent-light);
+      padding: 6px;
+      border-radius: 18px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      flex: 1;
+      background: none; border: none; color: var(--text); opacity: 0.7;
+      padding: 10px 16px; cursor: pointer; font-size: 0.9rem; font-weight: 700;
+      border-radius: 14px; transition: all 0.3s ease; white-space: nowrap;
+    }
+    .tab-btn:hover { opacity: 1; background: rgba(255,255,255,0.4); }
+    .tab-btn.active { opacity: 1; background: var(--card); color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+    .card {
+      background: var(--card); padding: 22px; border-radius: 22px; margin-bottom: 20px;
+      border: 1px solid var(--card-border); backdrop-filter: blur(12px); box-shadow: var(--shadow);
+    }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+
+    label { font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-bottom: 6px; display: block; text-transform: uppercase; }
+    
+    input, select, button {
+      width: 100%; padding: 11px 14px; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--input-bg);
+      color: var(--text); font-size: 0.9rem; font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+
+    button.btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--muted)); color: #fff;
+      font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 12px var(--accent-light);
+    }
+    button.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.08); }
+
+    .speed-dial-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .speed-chip {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .speed-chip:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px var(--accent-light);
+      border-color: var(--accent);
+    }
+
+    .progress-container { width: 100%; background: rgba(0, 0, 0, 0.05); height: 12px; border-radius: 20px; overflow: hidden; margin-top: 6px; }
+    .progress-bar { height: 100%; width: 0%; border-radius: 20px; background-color: var(--success); transition: width 0.4s ease; }
+
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 16px; font-size: 0.8rem; font-weight: 700; background: var(--accent-light); border: 1px solid var(--border); }
+    .badge-impulse { background: rgba(220, 38, 38, 0.1); color: var(--danger); border-color: var(--danger); }
+    .badge-essential { background: rgba(5, 150, 105, 0.1); color: var(--success); border-color: var(--success); }
+    .badge-income { background: rgba(2, 132, 199, 0.1); color: var(--accent); border-color: var(--accent); }
+
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 10px; }
+    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    th { color: var(--muted); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; }
+
+    .btn-delete { width: auto; padding: 5px 10px; background: rgba(220, 38, 38, 0.1); color: var(--danger); border: 1px solid var(--danger); border-radius: 8px; cursor: pointer; font-weight: 700; }
+    .btn-delete:hover { background: var(--danger); color: #fff; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <div class="container">
+    <header>
+      <div>
+        <h1 class="app-title">🎀 Anushika's Manager</h1>
+        <div class="date-badge" id="current-date-badge">📅 Today: Loading...</div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <div>
+          <label style="margin-bottom: 2px;">Sound FX</label>
+          <button class="btn-sound-toggle" id="sound-toggle-btn" onclick="toggleSound()">🔔 Sound On</button>
+        </div>
+        <div>
+          <label style="margin-bottom: 2px;">Theme Palette</label>
+          <select class="theme-select" id="theme-select" onchange="changeTheme(this.value)">
+            <option value="pink">🌸 Light Pink</option>
+            <option value="matcha">🍵 Light Matcha</option>
+            <option value="lavender">🪻 Light Lavender</option>
+            <option value="cyber">⚡ Light Sky</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- 💌 Daily Motivational Quote Widget -->
+    <div class="quote-card">
+      <span style="font-size: 1.4rem;">💡</span>
+      <div>
+        <span style="color: var(--accent); font-weight: 800;">Daily Money Wisdom:</span>
+        <span id="daily-quote">"Do not save what is left after spending, but spend what is left after saving."</span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('tracker', event)">📋 Daily Tracker</button>
+      <button class="tab-btn" onclick="switchTab('caps', event)">🎯 Category Budget Caps</button>
+      <button class="tab-btn" onclick="switchTab('bills', event)">⏰ Bill Reminders</button>
+      <button class="tab-btn" onclick="switchTab('analytics', event)">📊 Smart Analytics</button>
+      <button class="tab-btn" onclick="switchTab('settings', event)">⚙️ Backup & Settings</button>
+    </div>
+
+    <!-- TAB 1: DAILY TRACKER -->
+    <div id="tracker" class="tab-content active">
+      <div class="card grid-4">
+        <div>
+          <label>Total Income</label>
+          <h3 id="stat-income" style="margin:4px 0; color: var(--success); font-family: var(--title-font);">₹0.00</h3>
+        </div>
+        <div>
+          <label>Total Expenses</label>
+          <h3 id="stat-expenses" style="margin:4px 0; color: var(--danger); font-family: var(--title-font);">₹0.00</h3>
+        </div>
+        <div>
+          <label>Net Savings</label>
+          <h3 id="stat-savings" style="margin:4px 0; color: var(--accent); font-family: var(--title-font);">₹0.00</h3>
+        </div>
+        <div>
+          <label>Cap Budget Remaining</label>
+          <h3 id="stat-budget-rem" style="margin:4px 0; font-family: var(--title-font);">₹0.00</h3>
+        </div>
+      </div>
+
+      <div class="card grid-3">
+        <div>
+          <label>📅 Daily Average (This Month)</label>
+          <h4 id="stat-daily-avg" style="margin: 4px 0;">₹0.00 / day</h4>
+        </div>
+        <div>
+          <label>📈 vs Last Month</label>
+          <h4 id="stat-month-comp" style="margin: 4px 0;">0% change</h4>
+        </div>
+        <div>
+          <label>📊 vs Last Week</label>
+          <h4 id="stat-week-comp" style="margin: 4px 0;">0% change</h4>
+        </div>
+      </div>
+
+      <!-- ⚡ Speed Dial Buttons Section -->
+      <div style="margin-bottom: 12px;">
+        <label style="display: flex; justify-content: space-between; align-items: center;">
+          <span>⚡ Speed Dial Presets (1-Tap Quick Log)</span>
+        </label>
+        <div id="speed-dial-container" class="speed-dial-container"></div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0; font-family: var(--title-font);">➕ Add New Transaction</h3>
+        <form id="expense-form" onsubmit="addExpense(event)">
+          <div class="grid-3">
+            <div>
+              <label>Description</label>
+              <input type="text" id="desc" placeholder="e.g. Cafe Coffee" required />
+            </div>
+            <div>
+              <label>Amount (₹)</label>
+              <input type="number" id="amount" placeholder="0.00" step="0.01" required />
+            </div>
+            <div>
+              <label>Category</label>
+              <select id="category" onchange="handleCategoryChange(this)">
+                <!-- Dynamically populated from JS -->
+              </select>
+            </div>
+          </div>
+          <div class="grid-3" style="margin-top: 12px;">
+            <div>
+              <label>Type / Emotion</label>
+              <select id="impulse-tag">
+                <option value="Essential">✅ Essential Spending</option>
+                <option value="Impulse">🛍️ Impulse Buy</option>
+                <option value="Income">💰 Income / Salary</option>
+              </select>
+            </div>
+            <div>
+              <label>Date</label>
+              <input type="date" id="date" required />
+            </div>
+            <div style="display: flex; align-items: flex-end;">
+              <button type="submit" class="btn-primary">Save Entry ✨</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+          <h3 style="margin:0; font-family: var(--title-font);">📜 Transaction Log</h3>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%; max-width: 600px;">
+            <input type="text" id="search-input" placeholder="🔍 Search..." oninput="render()" style="flex:1;" />
+            <select id="filter-date-range" onchange="render()" style="width: 140px;">
+              <option value="ALL">All Time</option>
+              <option value="THIS_WEEK">This Week</option>
+              <option value="THIS_MONTH" selected>This Month</option>
+              <option value="LAST_MONTH">Last Month</option>
+              <option value="LAST_3_MONTHS">Last 3 Months</option>
+            </select>
+            <select id="filter-category" onchange="render()" style="width: 140px;">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Category</th><th>Tag</th><th>Amount</th><th>Action</th></tr>
+            </thead>
+            <tbody id="expense-list"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CATEGORY BUDGET CAPS -->
+    <div id="caps" class="tab-content">
+      <div class="card">
+        <h3 style="margin-top:0; font-family: var(--title-font);">🎯 Category Budget Limits</h3>
+        <p style="color: var(--muted); font-size: 0.85rem;">Set custom maximum spending limits for individual categories.</p>
+        <div id="category-caps-container" class="grid-2"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: BILL REMINDERS & DUE DATES -->
+    <div id="bills" class="tab-content">
+      <div class="card">
+        <h3 style="margin-top:0; font-family: var(--title-font);">⏰ Add Bill Reminder</h3>
+        <form id="bill-form" onsubmit="addBill(event)" class="grid-3">
+          <div>
+            <label>Bill Title</label>
+            <input type="text" id="bill-title" placeholder="e.g. WiFi Bill" required />
+          </div>
+          <div>
+            <label>Amount (₹)</label>
+            <input type="number" id="bill-amount" placeholder="0.00" step="0.01" required />
+          </div>
+          <div>
+            <label>Due Date</label>
+            <input type="date" id="bill-due-date" required />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <button type="submit" class="btn-primary" style="width: auto; padding: 10px 24px;">Add Reminder 🔔</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0; font-family: var(--title-font);">📌 Upcoming Bills</h3>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr><th>Bill Name</th><th>Amount</th><th>Due Date</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody id="bill-list"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: SMART ANALYTICS & IMPULSE BUY ANALYZER -->
+    <div id="analytics" class="tab-content">
+      <div class="card grid-2" style="border-color: rgba(220, 38, 38, 0.3);">
+        <div>
+          <label>🛍️ Impulse Buy Total</label>
+          <h2 id="impulse-total-amt" style="color: var(--danger); font-family: var(--title-font); margin: 4px 0;">₹0.00</h2>
+          <p style="margin:0; font-size: 0.85rem; color: var(--muted);">Money that could have been saved by avoiding impulse purchases.</p>
+        </div>
+        <div>
+          <label>🏆 Top Category</label>
+          <h3 id="top-category-name" style="margin: 4px 0; color: var(--accent); font-family: var(--title-font);">None</h3>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="margin-top:0; font-family: var(--title-font);">🍩 Expense Breakdown</h3>
+          <canvas id="categoryChart" style="max-height: 260px;"></canvas>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0; font-family: var(--title-font);">📈 Monthly Spending Trend</h3>
+          <canvas id="monthlyChart" style="max-height: 260px;"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: BACKUP & SETTINGS -->
+    <div id="settings" class="tab-content">
+      <div class="card">
+        <h3 style="font-family: var(--title-font); margin-top:0;">⚡ Customize Speed Dial Presets</h3>
+        <p style="color: var(--muted); font-size: 0.85rem;">Add custom quick buttons or remove unused ones.</p>
+        
+        <form id="preset-form" onsubmit="addSpeedPreset(event)" class="grid-4" style="margin-bottom: 20px;">
+          <div>
+            <label>Button Label</label>
+            <input type="text" id="preset-desc" placeholder="e.g. ☕ Coffee" required />
+          </div>
+          <div>
+            <label>Amount (₹)</label>
+            <input type="number" id="preset-amount" placeholder="150" required />
+          </div>
+          <div>
+            <label>Category</label>
+            <select id="preset-category">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+          <div style="display: flex; align-items: flex-end;">
+            <button type="submit" class="btn-primary">Add Preset ➕</button>
+          </div>
+        </form>
+
+        <label style="margin-bottom: 8px;">Active Presets List</label>
+        <div id="preset-manage-list"></div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-family: var(--title-font);">💾 Backup Data</h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn-primary" onclick="exportJSON()" style="width: auto; padding: 10px 20px;">⬇️ Download JSON Backup</button>
+          <button class="btn-primary" onclick="clearAllData()" style="width: auto; padding: 10px 20px; background: rgba(220, 38, 38, 0.15); color: var(--danger); border: 1px solid var(--danger);">🗑️ Clear All Data</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 🔊 CUTE SOUND ENGINE
+    let soundEnabled = JSON.parse(localStorage.getItem('sound_enabled')) ?? true;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function updateSoundBtnUI() {
+      const btn = document.getElementById('sound-toggle-btn');
+      if (btn) btn.innerText = soundEnabled ? '🔔 Sound On' : '🔕 Muted';
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('sound_enabled', soundEnabled);
+      updateSoundBtnUI();
+      if (soundEnabled) playSound('add');
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      const now = audioCtx.currentTime;
+
+      if (type === 'add') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      } else if (type === 'bill') {
+        const notes = [440, 554.37, 659.25];
+        notes.forEach((freq, idx) => {
+          const oscN = audioCtx.createOscillator();
+          const gainN = audioCtx.createGain();
+          oscN.connect(gainN);
+          gainN.connect(audioCtx.destination);
+          oscN.type = 'triangle';
+          oscN.frequency.value = freq;
+          const startTime = now + idx * 0.08;
+          gainN.gain.setValueAtTime(0.12, startTime);
+          gainN.gain.exponentialRampToValueAtTime(0.01, startTime + 0.18);
+          oscN.start(startTime);
+          oscN.stop(startTime + 0.18);
+        });
+      } else if (type === 'fanfare') {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const oscN = audioCtx.createOscillator();
+          const gainN = audioCtx.createGain();
+          oscN.connect(gainN);
+          gainN.connect(audioCtx.destination);
+          oscN.type = 'sine';
+          oscN.frequency.value = freq;
+          const startTime = now + idx * 0.09;
+          gainN.gain.setValueAtTime(0.15, startTime);
+          gainN.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
+          oscN.start(startTime);
+          oscN.stop(startTime + 0.3);
+        });
+      }
+    }
+
+    function updateDateBadge() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('current-date-badge').innerText = `📅 ${now.toLocaleDateString('en-US', options)}`;
+    }
+    updateDateBadge();
+    updateSoundBtnUI();
+
+    const quotes = [
+      "\"Do not save what is left after spending, but spend what is left after saving.\"",
+      "\"Beware of little expenses; a small leak will sink a great ship.\"",
+      "\"A budget isn't about restricting yourself; it's about giving yourself freedom! ✨\"",
+      "\"Track every rupee today so your future self can thrive tomorrow! 🌸\""
+    ];
+
+    let customCategories = JSON.parse(localStorage.getItem('custom_categories')) || [
+      { name: "Groceries", icon: "🛒" },
+      { name: "Food & Dining", icon: "🍔" },
+      { name: "Water & Utilities", icon: "💧" },
+      { name: "Travel & Transport", icon: "✈️" },
+      { name: "Shopping & Fun", icon: "🛍️" },
+      { name: "Income / Salary", icon: "💰" }
+    ];
+
+    let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    let categoryCaps = JSON.parse(localStorage.getItem('categoryCaps')) || {
+      "Groceries": 5000, "Food & Dining": 4000, "Water & Utilities": 3000,
+      "Travel & Transport": 3000, "Shopping & Fun": 2000
+    };
+    let bills = JSON.parse(localStorage.getItem('bills')) || [];
+    let speedPresets = JSON.parse(localStorage.getItem('speed_presets')) || [
+      { id: 1, desc: "☕ Coffee", amount: 150, category: "Food & Dining" },
+      { id: 2, desc: "🚕 Auto/Cab", amount: 100, category: "Travel & Transport" },
+      { id: 3, desc: "🥛 Milk", amount: 60, category: "Groceries" },
+      { id: 4, desc: "🍔 Lunch", amount: 200, category: "Food & Dining" },
+      { id: 5, desc: "🛒 Groceries", amount: 500, category: "Groceries" }
+    ];
+    let currentTheme = localStorage.getItem('theme_choice') || 'pink';
+
+    let chartInstance = null;
+
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    document.getElementById('theme-select').value = currentTheme;
+    document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+    function populateCategoryDropdowns() {
+      const catSelect = document.getElementById('category');
+      const presetSelect = document.getElementById('preset-category');
+      const filterSelect = document.getElementById('filter-category');
+
+      let optionsHTML = '';
+      customCategories.forEach(cat => {
+        optionsHTML += `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`;
+      });
+
+      const fullCatOptionsHTML = optionsHTML + `<option value="ADD_NEW_CAT">➕ Add New Category...</option>`;
+
+      if (catSelect) catSelect.innerHTML = fullCatOptionsHTML;
+      if (presetSelect) presetSelect.innerHTML = optionsHTML;
+      if (filterSelect) {
+        filterSelect.innerHTML = `<option value="ALL">All Categories</option>` + optionsHTML;
+      }
+    }
+
+    function handleCategoryChange(selectElem) {
+      if (selectElem.value === 'ADD_NEW_CAT') {
+        const newCatName = prompt("Enter new category name:");
+        if (newCatName && newCatName.trim() !== '') {
+          const emoji = prompt("Enter an emoji for this category (optional):", "🏷️") || "🏷️";
+          const formattedName = newCatName.trim();
+
+          if (!customCategories.some(c => c.name.toLowerCase() === formattedName.toLowerCase())) {
+            customCategories.push({ name: formattedName, icon: emoji });
+            localStorage.setItem('custom_categories', JSON.stringify(customCategories));
+            categoryCaps[formattedName] = 3000;
+            localStorage.setItem('categoryCaps', JSON.stringify(categoryCaps));
+          }
+          populateCategoryDropdowns();
+          selectElem.value = formattedName;
+          saveAndRender();
+        } else {
+          selectElem.selectedIndex = 0;
+        }
+      }
+    }
+
+    function changeTheme(themeName) {
+      currentTheme = themeName;
+      document.documentElement.setAttribute('data-theme', themeName);
+      localStorage.setItem('theme_choice', themeName);
+      if (document.getElementById('analytics').classList.contains('active')) renderCharts();
+    }
+
+    function switchTab(tabId, evt) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      evt.target.classList.add('active');
+      if (tabId === 'analytics') renderCharts();
+    }
+
+    function saveAndRender() {
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+      localStorage.setItem('categoryCaps', JSON.stringify(categoryCaps));
+      localStorage.setItem('bills', JSON.stringify(bills));
+      localStorage.setItem('speed_presets', JSON.stringify(speedPresets));
+      render();
+    }
+
+    function triggerSpeedDial(desc, amount, category) {
+      const now = new Date();
+      const todayStr = now.toISOString().substring(0, 10);
+      const newExp = {
+        id: Date.now(),
+        desc: desc,
+        amount: parseFloat(amount),
+        category: category,
+        tag: 'Essential',
+        date: todayStr
+      };
+      expenses.push(newExp);
+      playSound('add');
+      saveAndRender();
+    }
+
+    function deleteSpeedPreset(id) {
+      speedPresets = speedPresets.filter(p => p.id !== id);
+      saveAndRender();
+    }
+
+    function renderSpeedDialChips() {
+      const container = document.getElementById('speed-dial-container');
+      const manageContainer = document.getElementById('preset-manage-list');
+
+      container.innerHTML = '';
+      speedPresets.forEach(preset => {
+        container.innerHTML += `
+          <button type="button" class="speed-chip" onclick="triggerSpeedDial('${preset.desc}', ${preset.amount}, '${preset.category}')">
+            <span>${preset.desc}</span>
+            <span style="opacity:0.8; font-weight:800;">₹${preset.amount}</span>
+          </button>
+        `;
+      });
+
+      if (manageContainer) {
+        manageContainer.innerHTML = '';
+        if (speedPresets.length === 0) {
+          manageContainer.innerHTML = `<p style="color:var(--muted); font-size:0.85rem;">No active presets. Add one above!</p>`;
+        } else {
+          speedPresets.forEach(preset => {
+            manageContainer.innerHTML += `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--input-bg); border-radius:12px; border:1px solid var(--border); margin-bottom:8px;">
+                <span><strong>${preset.desc}</strong> — ₹${preset.amount} (${preset.category})</span>
+                <button class="btn-delete" type="button" onclick="deleteSpeedPreset(${preset.id})">❌ Delete</button>
+              </div>
+            `;
+          });
+        }
+      }
+    }
+
+    function addSpeedPreset(e) {
+      e.preventDefault();
+      const newPreset = {
+        id: Date.now(),
+        desc: document.getElementById('preset-desc').value,
+        amount: parseFloat(document.getElementById('preset-amount').value),
+        category: document.getElementById('preset-category').value
+      };
+      speedPresets.push(newPreset);
+      document.getElementById('preset-form').reset();
+      saveAndRender();
+    }
+
+    function addExpense(e) {
+      e.preventDefault();
+      const tag = document.getElementById('impulse-tag').value;
+      const category = document.getElementById('category').value;
+      
+      const newExp = {
+        id: Date.now(),
+        desc: document.getElementById('desc').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        category: category,
+        tag: tag,
+        date: document.getElementById('date').value
+      };
+      expenses.push(newExp);
+      document.getElementById('expense-form').reset();
+      document.getElementById('date').valueAsDate = new Date();
+      playSound((tag === "Income" || category === "Income / Salary") ? 'fanfare' : 'add');
+      saveAndRender();
+    }
+
+    function deleteExpense(id) {
+      expenses = expenses.filter(exp => exp.id !== id);
+      saveAndRender();
+    }
+
+    function addBill(e) {
+      e.preventDefault();
+      const newBill = {
+        id: Date.now(),
+        title: document.getElementById('bill-title').value,
+        amount: parseFloat(document.getElementById('bill-amount').value),
+        dueDate: document.getElementById('bill-due-date').value,
+        paid: false
+      };
+      bills.push(newBill);
+      document.getElementById('bill-form').reset();
+      playSound('add');
+      saveAndRender();
+    }
+
+    function toggleBillStatus(id) {
+      bills = bills.map(b => {
+        if (b.id === id) {
+          const nextState = !b.paid;
+          if (nextState) playSound('bill');
+          return { ...b, paid: nextState };
+        }
+        return b;
+      });
+      saveAndRender();
+    }
+
+    function deleteBill(id) {
+      bills = bills.filter(b => b.id !== id);
+      saveAndRender();
+    }
+
+    function updateCategoryCap(cat, val) {
+      categoryCaps[cat] = parseFloat(val) || 0;
+      saveAndRender();
+    }
+
+    function render() {
+      populateCategoryDropdowns();
+      renderSpeedDialChips();
+
+      const list = document.getElementById('expense-list');
+      list.innerHTML = '';
+
+      const searchQuery = (document.getElementById('search-input')?.value || '').toLowerCase();
+      const selectedCategory = document.getElementById('filter-category')?.value || 'ALL';
+      const selectedDateFilter = document.getElementById('filter-date-range')?.value || 'THIS_MONTH';
+
+      const now = new Date();
+      const currentMonthStr = now.toISOString().substring(0, 7);
+
+      // Calculate previous month's YYYY-MM string
+      const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const lastMonthStr = prevMonthDate.toISOString().substring(0, 7);
+
+      let totalIncome = 0;
+      let totalExpenses = 0;
+      let totalImpulse = 0;
+      const categorySpentMap = {};
+
+      const isThisWeek = (dateStr) => {
+        const d = new Date(dateStr);
+        const diff = (now - d) / (1000 * 60 * 60 * 24);
+        return diff >= 0 && diff <= 7;
+      };
+
+      const isLast3Months = (dateStr) => {
+        const d = new Date(dateStr);
+        const diffDays = (now - d) / (1000 * 60 * 60 * 24);
+        return diffDays <= 90;
+      };
+
+      const filteredExpenses = expenses.filter(exp => {
+        const matchesSearch = exp.desc.toLowerCase().includes(searchQuery);
+        const matchesCategory = selectedCategory === 'ALL' || exp.category === selectedCategory;
+
+        let matchesDate = true;
+        if (selectedDateFilter === 'THIS_WEEK') matchesDate = isThisWeek(exp.date);
+        else if (selectedDateFilter === 'THIS_MONTH') matchesDate = exp.date.startsWith(currentMonthStr);
+        else if (selectedDateFilter === 'LAST_MONTH') matchesDate = exp.date.startsWith(lastMonthStr);
+        else if (selectedDateFilter === 'LAST_3_MONTHS') matchesDate = isLast3Months(exp.date);
+
+        return matchesSearch && matchesCategory && matchesDate;
+      });
+
+      expenses.forEach(exp => {
+        const isInc = exp.tag === "Income" || exp.category === "Income / Salary";
+        if (isInc) {
+          totalIncome += exp.amount;
+        } else {
+          totalExpenses += exp.amount;
+          if (exp.tag === "Impulse") totalImpulse += exp.amount;
+
+          if (exp.date.startsWith(currentMonthStr)) {
+            categorySpentMap[exp.category] = (categorySpentMap[exp.category] || 0) + exp.amount;
+          }
+        }
+      });
+
+      if (filteredExpenses.length === 0) {
+        list.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--muted);">No matching transactions found ✨</td></tr>`;
+      } else {
+        filteredExpenses.forEach(exp => {
+          const isIncome = exp.tag === "Income" || exp.category === "Income / Salary";
+          const catObj = customCategories.find(c => c.name === exp.category);
+          const icon = catObj ? catObj.icon : "📦";
+          
+          let badgeClass = "badge-essential";
+          if (isIncome) badgeClass = "badge-income";
+          else if (exp.tag === "Impulse") badgeClass = "badge-impulse";
+
+          list.innerHTML += `
+            <tr>
+              <td>${exp.date}</td>
+              <td style="font-weight:600;">${exp.desc}</td>
+              <td><span class="badge">${icon} ${exp.category}</span></td>
+              <td><span class="badge ${badgeClass}">${exp.tag || 'Essential'}</span></td>
+              <td style="font-weight:bold; color: ${isIncome ? 'var(--success)' : 'var(--text)'};">
+                ${isIncome ? '+' : ''}₹${exp.amount.toFixed(2)}
+              </td>
+              <td><button class="btn-delete" onclick="deleteExpense(${exp.id})">Delete</button></td>
+            </tr>
+          `;
+        });
+      }
+
+      let totalCapAllowance = 0;
+      let totalCapSpent = 0;
+      Object.keys(categoryCaps).forEach(cat => {
+        totalCapAllowance += categoryCaps[cat];
+        totalCapSpent += (categorySpentMap[cat] || 0);
+      });
+      const remainingCapBudget = Math.max(0, totalCapAllowance - totalCapSpent);
+
+      document.getElementById('stat-income').innerText = `₹${totalIncome.toFixed(2)}`;
+      document.getElementById('stat-expenses').innerText = `₹${totalExpenses.toFixed(2)}`;
+      document.getElementById('stat-savings').innerText = `₹${(totalIncome - totalExpenses).toFixed(2)}`;
+      document.getElementById('stat-budget-rem').innerText = `₹${remainingCapBudget.toFixed(2)}`;
+      document.getElementById('impulse-total-amt').innerText = `₹${totalImpulse.toFixed(2)}`;
+
+      const daysPassed = now.getDate();
+      const thisMonthExpenses = Object.values(categorySpentMap).reduce((a, b) => a + b, 0);
+      const dailyAvg = daysPassed > 0 ? (thisMonthExpenses / daysPassed) : 0;
+      document.getElementById('stat-daily-avg').innerText = `₹${dailyAvg.toFixed(2)} / day`;
+
+      const capsContainer = document.getElementById('category-caps-container');
+      capsContainer.innerHTML = '';
+      Object.keys(categoryCaps).forEach(cat => {
+        const limit = categoryCaps[cat];
+        const spent = categorySpentMap[cat] || 0;
+        const pct = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0;
+        const catObj = customCategories.find(c => c.name === cat);
+        const icon = catObj ? catObj.icon : "📦";
+
+        capsContainer.innerHTML += `
+          <div style="background: var(--input-bg); padding: 14px; border-radius: 16px; border: 1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700;">${icon} ${cat}</span>
+              <span style="font-size:0.85rem; font-weight:800; color: var(--accent);">${pct.toFixed(0)}%</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; margin-top:8px;">
+              <input type="number" value="${limit}" onchange="updateCategoryCap('${cat}', this.value)" style="width: 110px; padding: 6px 10px;" />
+              <div style="flex:1;">
+                <div style="font-size:0.78rem; color:var(--muted); margin-bottom:2px;">Spent: ₹${spent.toFixed(2)} / Max ₹${limit}</div>
+                <div class="progress-container"><div class="progress-bar" style="width:${pct}%; background-color: ${pct >= 100 ? 'var(--danger)' : 'var(--accent)'};"></div></div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      const billList = document.getElementById('bill-list');
+      billList.innerHTML = '';
+      if (bills.length === 0) {
+        billList.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 16px; color: var(--muted);">No bill reminders set ✨</td></tr>`;
+      } else {
+        bills.forEach(b => {
+          const isOverdue = new Date(b.dueDate) < now && !b.paid;
+          const statusBadge = b.paid ? `<span class="badge badge-essential">Paid ✅</span>` : isOverdue ? `<span class="badge badge-impulse">Overdue 🚨</span>` : `<span class="badge">Upcoming ⏰</span>`;
+
+          billList.innerHTML += `
+            <tr>
+              <td style="font-weight:600;">${b.title}</td>
+              <td style="font-weight:bold;">₹${b.amount.toFixed(2)}</td>
+              <td>${b.dueDate}</td>
+              <td>${statusBadge}</td>
+              <td>
+                <button onclick="toggleBillStatus(${b.id})" class="btn-primary" style="width:auto; padding:4px 10px; font-size:0.8rem;">
+                  ${b.paid ? 'Mark Unpaid' : 'Mark Paid'}
+                </button>
+                <button onclick="deleteBill(${b.id})" class="btn-delete" style="margin-left:4px;">🗑️</button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+    }
+
+    function renderCharts() {
+      const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim();
+
+      const catTotals = {};
+      expenses.forEach(exp => {
+        if (exp.tag !== "Income" && exp.category !== "Income / Salary") {
+          catTotals[exp.category] = (catTotals[exp.category] || 0) + exp.amount;
+        }
+      });
+
+      const ctx1 = document.getElementById('categoryChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(catTotals),
+          datasets: [{ data: Object.values(catTotals), backgroundColor: ['#f472b6', '#a855f7', '#38bdf8', '#fbbf24', '#4ade80', '#f43f5e'] }]
+        },
+        options: { plugins: { legend: { labels: { color: textColor } } } }
+      });
+    }
+
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(expenses, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `anushika_manager_backup.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function clearAllData() {
+      if (confirm("Are you sure you want to reset all data?")) {
+        expenses = [];
+        bills = [];
+        saveAndRender();
+      }
+    }
+
+    document.getElementById('date').valueAsDate = new Date();
+    document.getElementById('bill-due-date').valueAsDate = new Date();
+    populateCategoryDropdowns();
+    render();
+  </script>
+</body>
+</html>
